@@ -182,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         "onMarkerDragEnd:\n" + reportAddress,
                         Toast.LENGTH_LONG).show();
 
-                //System.out.println(reportAddress);
+                System.out.println(reportAddress);
             }
 
             @Override
