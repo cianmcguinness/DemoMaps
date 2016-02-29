@@ -131,6 +131,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         reportLat = latitude;
         reportLong = longitude;
 
+
+
         final Geocoder geocoder;
         List<Address> addresses = null;
         geocoder = new Geocoder(this,Locale.getDefault());
@@ -141,6 +143,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         reportAddress = addresses.get(0).getAddressLine(0);
 
+
+        Toast.makeText(MapsActivity.this,
+                "onMapReady:\n" + reportAddress,
+                Toast.LENGTH_LONG).show();
 
         mMap.setOnMarkerDragListener(new OnMarkerDragListener(){
 
