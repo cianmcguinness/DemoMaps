@@ -1,13 +1,10 @@
 package com.example.cian.demomaps;
 
+
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -17,19 +14,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 
-import android.util.Log;
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.*;
+
+import java.util.List;
+import java.util.Locale;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -37,6 +36,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double reportLat = 0;
     double reportLong = 0;
     String reportAddress = "";
+    String reportDescription = "";
 
 
     @Override
@@ -52,15 +52,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void onSearch(View view){
-        EditText location_tf = (EditText)findViewById(R.id.TFaddress);
+    public void report(View view) {
+        EditText description_tf = (EditText) findViewById(R.id.editDescription);
+        String description = description_tf.getText().toString();
+
+        reportDescription = description;
+
+        Toast.makeText(MapsActivity.this, "report:\n" +
+                "reportLat: " + reportLat + "\n" +
+                "reportLong: " + reportLong + "\n" +
+                "reportAddress: " + reportAddress + "\n" +
+                "reportDescription: " + reportDescription, Toast.LENGTH_LONG).show();
+        //Todo insert to database
+
+
+    }
+
+    public void onSearch(View view) {
+        EditText location_tf = (EditText) findViewById(R.id.TFaddress);
         String location = location_tf.getText().toString();
 
         List<Address> addressList = null;
-        if(location != null || !location.equals ("")){
+        if (location != null || !location.equals("")) {
             Geocoder geocoder = new Geocoder(this);
             try {
-                addressList = geocoder.getFromLocationName(location , 1);
+                addressList = geocoder.getFromLocationName(location, 1);
 
 
             } catch (IOException e) {
@@ -68,19 +84,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
 
-                Address address = addressList.get(0);
-                LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
-                //mMap.addMarker(new MarkerOptions().position(latlng).title("Your current location"));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
+            Address address = addressList.get(0);
+            LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
+            //mMap.addMarker(new MarkerOptions().position(latlng).title("Your current location"));
+
+
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
 
         }
     }
 
-    public void changeType(View view){
-        if(mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL){
+    public void changeType(View view) {
+        if (mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        }
-        else{
+        } else {
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
     }
@@ -88,18 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(ireland));
-        //LatLng here = new LatLng(53.2734, -7.778320310000026);
-        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(here, 6));
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
-        mMap.setOnMarkerClickListener(this);
-
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -108,21 +113,58 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-          //  return;
+            return;
         }
-        String provider = locationManager.getBestProvider(criteria, false);
+        mMap.setMyLocationEnabled(true);
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(ireland));
+        //LatLng here = new LatLng(53.2734, -7.778320310000026);
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(here, 6));
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+        mMap.setOnMarkerClickListener(this);
 
-        Location location = locationManager.getLastKnownLocation(provider);
+        //LocationManager locationManager = (LocationManager)
+          //      getSystemService(Context.LOCATION_SERVICE);
+        //Criteria criteria = new Criteria();
 
-        final double latitude = location.getLatitude();
-        final double longitude = location.getLongitude();
+        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+          //  return;
+        //}
+        //String provider = locationManager.getBestProvider(criteria, false);
+
+        //Location location = locationManager.getLastKnownLocation(provider);
+
+        //final double latitude = location.getLatitude();
+        //final double longitude = location.getLongitude();
+
+        double latitude = 0;
+        double longitude = 0;
+
+        GPSTracker gpsTracker = new GPSTracker(this);
+
+        if (gpsTracker.getIsGPSTrackingEnabled())
+        {
+            latitude = gpsTracker.latitude;
+            longitude = gpsTracker.longitude;
+        }
+        else
+        {
+            Toast.makeText(MapsActivity.this,
+                    "GPS_Disabled:\n",
+                    Toast.LENGTH_LONG).show();
+        }
 
         LatLng here = new LatLng(latitude, longitude);
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
-        // TODO Auto-generated method stub
-            // Here your code
-            //Toast.makeText(MapsActivity.this, "
+
         MarkerOptions markerOptions =
                 new MarkerOptions().position(here).draggable(true).title("Drag Marker To Location Of Report");
         Marker reportMarker = mMap.addMarker(markerOptions);
@@ -130,7 +172,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         reportLat = latitude;
         reportLong = longitude;
-
 
 
         final Geocoder geocoder;
@@ -161,11 +202,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 LatLng position = marker.getPosition(); //
-                Toast.makeText(
-                        MapsActivity.this,
-                        "Lat " + position.latitude + " "
-                                + "Long " + position.longitude,
-                        Toast.LENGTH_LONG).show();
+
                 reportLat =  position.latitude;
                 reportLong = position.longitude;
 
@@ -257,4 +294,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return true;
     }
+
 }
