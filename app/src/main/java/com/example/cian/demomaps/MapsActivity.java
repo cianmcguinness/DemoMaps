@@ -1,6 +1,5 @@
 package com.example.cian.demomaps;
 
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -31,12 +30,14 @@ import java.util.Locale;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
-
+    DatabaseHelper myDb;
     private GoogleMap mMap;
     double reportLat = 0;
     double reportLong = 0;
     String reportAddress = "";
     String reportDescription = "";
+
+    Marker reportMarker = null;
 
 
     @Override
@@ -49,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         mapFragment.getMapAsync(this);
+
+        myDb = new DatabaseHelper(this);
+
 
     }
 
@@ -63,7 +67,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "reportLong: " + reportLong + "\n" +
                 "reportAddress: " + reportAddress + "\n" +
                 "reportDescription: " + reportDescription, Toast.LENGTH_LONG).show();
-        //Todo insert to database
+
+
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
+        //Todo insert to database************************************
 
 
     }
@@ -86,8 +107,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Address address = addressList.get(0);
             LatLng latlng = new LatLng(address.getLatitude(), address.getLongitude());
-            //mMap.addMarker(new MarkerOptions().position(latlng).title("Your current location"));
 
+            reportMarker.setPosition(new LatLng(address.getLatitude(), address.getLongitude()));
+            reportAddress = address.toString();
+            reportLat = address.getLatitude();
+            reportLong = address.getLongitude();
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng, 15));
 
@@ -167,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         MarkerOptions markerOptions =
                 new MarkerOptions().position(here).draggable(true).title("Drag Marker To Location Of Report");
-        Marker reportMarker = mMap.addMarker(markerOptions);
+        reportMarker = mMap.addMarker(markerOptions);
         reportMarker.showInfoWindow();
 
         reportLat = latitude;
@@ -257,7 +281,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapLongClick(LatLng latLng) {
 
 
-        /*Geocoder geocoder;
+        Geocoder geocoder;
         List <Address> addresses = null;
         geocoder = new Geocoder(this,Locale.getDefault());
         try {
@@ -269,9 +293,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String address = "";
         address = addresses.get(0).getAddressLine(0);
 
+        reportMarker.setPosition(latLng);
+        reportAddress = address;
+        reportLat = latLng.latitude;
+        reportLong = latLng.longitude;
+
         Toast.makeText(MapsActivity.this,
                 "onMapLongClick:\n" + address + "\n" + latLng.latitude + " : " + latLng.longitude,
-                Toast.LENGTH_LONG).show();*/
+                Toast.LENGTH_LONG).show();
 
         //Add marker on LongClick position
         //MarkerOptions markerOptions =
