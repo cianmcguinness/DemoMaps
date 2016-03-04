@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+//ryan test comment for first commit
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
     DatabaseHelper myDb;
