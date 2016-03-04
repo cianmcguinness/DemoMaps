@@ -30,6 +30,9 @@ import java.util.Locale;
 
 //ryan test comment for first commit
 
+
+//ryan test comment for second commit
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
     DatabaseHelper myDb;
     private GoogleMap mMap;
