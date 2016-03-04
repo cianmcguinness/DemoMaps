@@ -30,8 +30,7 @@ import java.util.Locale;
 
 //ryan test comment for first commit
 
-
-//ryan test comment for second commit
+// cian is a bad ass
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
     DatabaseHelper myDb;
