@@ -25,6 +25,9 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,12 +36,14 @@ import java.util.Locale;
 // cian is a bad ass
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
-    DatabaseHelper myDb;
     private GoogleMap mMap;
     double reportLat = 0;
     double reportLong = 0;
     String reportAddress = "";
     String reportDescription = "";
+
+
+
 
     Marker reportMarker = null;
 
@@ -54,8 +59,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mapFragment.getMapAsync(this);
 
-        myDb = new DatabaseHelper(this);
-
 
     }
 
@@ -65,11 +68,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         reportDescription = description;
 
-        Toast.makeText(MapsActivity.this, "report:\n" +
+        /*Calendar c = Calendar.getInstance();
+        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
+        int year = c.get(Calendar.YEAR);*/
+
+
+
+        /*Toast.makeText(MapsActivity.this, "report:\n" +
                 "reportLat: " + reportLat + "\n" +
                 "reportLong: " + reportLong + "\n" +
                 "reportAddress: " + reportAddress + "\n" +
-                "reportDescription: " + reportDescription, Toast.LENGTH_LONG).show();
+                "reportDescription: " + reportDescription +
+                "reportDate: " + dayOfMonth + "/" + month + "/" + year
+                , Toast.LENGTH_LONG).show();*/
 
 
         //Todo insert to database************************************
